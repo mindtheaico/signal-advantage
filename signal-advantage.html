@@ -1,0 +1,1206 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Signal Advantage | Strategic Context Navigator</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.2.0/umd/react.production.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.2.0/umd/react-dom.production.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/7.22.10/babel.min.js"></script>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css" rel="stylesheet">
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+    
+    body {
+      font-family: 'Inter', sans-serif;
+      background-color: #0f172a;
+      color: #f8fafc;
+      overflow-x: hidden;
+    }
+    
+    .signal-gradient {
+      background: linear-gradient(135deg, #4f46e5 0%, #7e22ce 100%);
+    }
+    
+    .glass-card {
+      background: rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+    }
+    
+    .focus-lens {
+      transition: background 0.3s ease;
+    }
+    
+    @keyframes pulse {
+      0% { opacity: 0.6; }
+      50% { opacity: 1; }
+      100% { opacity: 0.6; }
+    }
+    
+    .animate-pulse-glow {
+      animation: pulse 2s infinite ease-in-out;
+    }
+    
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    
+    .animate-fadeIn {
+      animation: fadeIn 0.5s ease-out forwards;
+    }
+    
+    .signal-slider {
+      -webkit-appearance: none;
+      height: 6px;
+      background: linear-gradient(to right, #312e81, #4f46e5, #7e22ce, #a855f7, #ec4899);
+      border-radius: 5px;
+      outline: none;
+    }
+    
+    .signal-slider::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      appearance: none;
+      width: 18px;
+      height: 18px;
+      background: white;
+      border-radius: 50%;
+      cursor: pointer;
+      box-shadow: 0 0 8px rgba(0, 0, 0, 0.3);
+    }
+    
+    .tab-indicator {
+      transition: transform 0.3s ease;
+    }
+    
+    .nav-button {
+      transition: all 0.2s ease;
+    }
+    
+    .nav-button:hover {
+      transform: translateY(-2px);
+    }
+    
+    .nav-button:active {
+      transform: translateY(0);
+    }
+    
+    .noise-bg {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      opacity: 0.4;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='4' height='4' viewBox='0 0 4 4'%3E%3Cpath fill='%237e22ce' fill-opacity='0.1' d='M1 3h1v1H1V3zm2-2h1v1H3V1z'%3E%3C/path%3E%3C/svg%3E");
+    }
+    
+    .highlight-text {
+      background: linear-gradient(to right, #a855f7, #ec4899);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      font-weight: 600;
+    }
+    
+    .glow {
+      box-shadow: 0 0 15px rgba(168, 85, 247, 0.5);
+    }
+    
+    .content-transition {
+      transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+  </style>
+</head>
+<body>
+  <div id="root"></div>
+  
+  <script type="text/babel">
+    const { useState, useEffect, useRef } = React;
+    
+    const SignalAdvantageApp = () => {
+      // Comprehensive topic data
+      const topicData = {
+        title: "The Signal Advantage",
+        subtitle: "Mastering the Art of High-Value Context in Decision Making",
+        
+        // Core framework sections explaining the concept
+        framework: [
+          {
+            name: "Context Fundamentals",
+            description: "The foundation of effective knowledge work in today's information-rich environment",
+            principles: [
+              {
+                title: "Signal vs. Noise Ratio",
+                description: "In complex domains, 80-95% of available information is irrelevant to specific decisions. The ability to identify signal is more valuable than processing capacity."
+              },
+              {
+                title: "Context-Dependent Value",
+                description: "Information value is contextual—the same data point may be critical in one situation and irrelevant in another. True expertise manifests as knowing which context matters when."
+              },
+              {
+                title: "The Expertise Paradox",
+                description: "Elite performers often consider fewer variables, not more. Their value comes from identifying the minimal set of decisive factors rather than comprehensive analysis."
+              },
+              {
+                title: "The Context Bottleneck",
+                description: "The limiting factor in most organizations isn't analytical capacity but having the right context available at the decision point. Context curation creates exponential value."
+              }
+            ]
+          },
+          {
+            name: "AI Augmentation",
+            description: "How the context advantage reshapes our approach to AI-enhanced decision making",
+            principles: [
+              {
+                title: "The Context Gap",
+                description: "Current AI systems excel at reasoning with provided information but struggle to independently identify which context matters most. This creates the primary bottleneck in AI effectiveness."
+              },
+              {
+                title: "Human-AI Context Symbiosis",
+                description: "The most effective systems are those where humans curate and direct context while AI handles pattern recognition and processing within that context."
+              },
+              {
+                title: "Context Injection Points",
+                description: "Systems that provide explicit mechanisms for context shaping (prompts, knowledge bases, etc.) outperform general systems for specialized knowledge work."
+              },
+              {
+                title: "Context Persistence",
+                description: "The ability to maintain consistent context over time and across interactions is a critical factor in AI system effectiveness for complex knowledge domains."
+              }
+            ]
+          },
+          {
+            name: "Competitive Advantage",
+            description: "Why context mastery creates sustainable organizational advantage",
+            principles: [
+              {
+                title: "Context as Strategic Moat",
+                description: "Proprietary context (industry-specific data, client insights, organizational knowledge) creates more sustainable advantage than generic algorithmic capabilities."
+              },
+              {
+                title: "Context Transfer Efficiency",
+                description: "Organizations that effectively transfer context between teams and systems outperform those with superior but siloed expertise, creating multiplicative value."
+              },
+              {
+                title: "Decision Velocity",
+                description: "High-context environments enable faster, higher-quality decisions, creating compounding advantages that accumulate over time and scale."
+              },
+              {
+                title: "Context-First Culture",
+                description: "Teams that prioritize context-gathering before solution-building consistently deliver better outcomes with fewer resources and iterations."
+              }
+            ]
+          }
+        ],
+        
+        // Signal spectrum layers showing progression from raw data to insight
+        layers: [
+          {
+            level: "Raw Data Deluge",
+            description: "Unfiltered information with minimal contextual relevance",
+            content: "Q3 sales data shows 8.3% growth in enterprise segment while SMB declined 2.1%. Monthly user engagement metrics indicate 17% increase in feature adoption. Customer feedback survey completion rate at 24%. Primary user persona research suggests preference for simplified interface. Competitor A launched new offering targeting adjacent market. Engineering reports 73% progress on roadmap with 3 blockers identified. Talent acquisition showing 42-day average time-to-fill for senior roles. Market analysis indicates potential recession concerns affecting Q4 forecast. Board governance review scheduled for next month. Cost structure analysis shows cloud infrastructure increasing 18% YoY. Brand health metrics stable at 72 NPS with 4-point regional variance.",
+            noiseLevel: 90
+          },
+          {
+            level: "Initial Filtering",
+            description: "Basic organization but limited contextual prioritization",
+            content: "Information quality significantly impacts knowledge work productivity. Expert decision-makers filter signal from noise as their primary function. Organizational advantage emerges from having the right context at decision points. Strategic insights often come from recognizing patterns in seemingly unrelated data. There is substantial value in orchestration and curation of information flows. Context quality correlates more strongly with decision outcomes than time allocated to analysis.",
+            noiseLevel: 60
+          },
+          {
+            level: "Contextual Organization",
+            description: "Information aligned with specific decision requirements",
+            content: "Knowledge workers create value primarily through context curation, not processing power. The limiting factor in complex decisions is contextual understanding, not analytical capability. High-value expertise manifests as knowing which 20% of available information determines 80% of the outcome. Organizations that transfer context effectively outperform those with superior but isolated expertise.",
+            noiseLevel: 30
+          },
+          {
+            level: "High-Signal Insight",
+            description: "Essential information with perfect decision relevance",
+            content: "In strategic decision-making, having the RIGHT context is more valuable than analytical horsepower. The highest-paid experts are compensated for knowing which facts matter, not for processing more information faster. Competitive advantage in the AI era comes from context architecture, not raw computational power.",
+            noiseLevel: 10
+          },
+          {
+            level: "Strategic Clarity",
+            description: "Transformative understanding with perfect context",
+            content: "Context is the primary constraint in knowledge work, not processing capacity. The future belongs to context architects.",
+            noiseLevel: 0
+          }
+        ],
+        
+        // Professional domains with detailed examples
+        domains: [
+          {
+            name: "Business Strategy",
+            icon: "📊",
+            description: "Strategic clarity through contextual focus",
+            valueProposition: "Strategic advantage comes from identifying the few factors that determine success, not comprehensive analysis.",
+            examples: [
+              { 
+                signal: "Minimal",
+                title: "Data Overload",
+                content: "Market research shows varying consumer preferences across 6 demographic segments with Gen Z showing 12% higher interest in subscription services. Competitor A launched three new products with 8.5% market penetration while Competitor B raised $42M Series C. Supply chain costs increased 7% with container availability down 14%. Customer acquisition cost is $42.18 (up 4% YoY) with retention at 78% annually. Social media sentiment mixed on recent brand refresh. Talent acquisition facing challenges with 22% increase in time-to-hire. Industry analysts project 5-7% category growth. R&D pipeline includes 8 potential initiatives with varying resource requirements.",
+                insights: [
+                  "No strategic priorities emerge from the data soup",
+                  "Equal emphasis creates decision paralysis",
+                  "Tactical metrics obscure strategic patterns"
+                ]
+              },
+              { 
+                signal: "Basic",
+                title: "Emerging Patterns",
+                content: "Two critical trends are emerging from our data: (1) Rapid adoption of our subscription tier among professionals aged 35-50, which now accounts for 64% of new revenue despite minimal marketing focus; (2) Significant competitive vulnerability in the enterprise segment where our win rate declined from 62% to 44% over 18 months. Meanwhile, our retail expansion shows diminishing returns despite increased marketing spend.",
+                insights: [
+                  "Primary growth driver identified",
+                  "Strategic vulnerability highlighted",
+                  "Resource allocation inefficiency spotted"
+                ]
+              },
+              { 
+                signal: "Optimal",
+                title: "Strategic Clarity",
+                content: "Our true competitive advantage isn't our product features—it's our distribution network which reaches 3.8x more potential customers than our nearest competitor. Meanwhile, our subscription pricing generates 4.7x the customer lifetime value compared to one-time purchases. The data clearly indicates we should double down on channel expansion while accelerating the transition to subscription model, even at the cost of short-term revenue.",
+                insights: [
+                  "Core competitive advantage properly identified",
+                  "Clear strategic direction with supporting metrics",
+                  "Trade-off decisions supported by lifetime value analysis"
+                ]
+              },
+              {
+                signal: "Transformative",
+                title: "Market-Defining Vision",
+                content: "The convergence of our distribution advantage and subscription model creates a unique strategic opportunity: we can become the industry's aggregation platform. By opening our distribution channels to complementary third-party services for a revenue share, we can create network effects that competitors cannot match. This transforms us from a product company to an ecosystem company—potentially tripling our addressable market while improving retention by 60-80%.",
+                insights: [
+                  "Paradigm-shifting strategic reframe",
+                  "Multiplicative value creation identified",
+                  "Defensive moat with sustainable advantage"
+                ]
+              }
+            ],
+            strategies: [
+              "Identify the 2-3 factors that will determine 80% of future outcomes",
+              "Focus on sustainable competitive advantages rather than temporary wins",
+              "Differentiate between symptoms and root causes in performance data",
+              "Allocate resources based on future potential, not past performance"
+            ],
+            metrics: [
+              { name: "Resource Allocation Efficiency", improvement: "+62%" },
+              { name: "Strategic Initiative Success", improvement: "+45%" },
+              { name: "Long-term Growth Rate", improvement: "+83%" }
+            ]
+          },
+          {
+            name: "Executive Leadership",
+            icon: "🧠",
+            description: "Decision quality through contextual clarity",
+            valueProposition: "Leadership effectiveness depends on focusing teams on the right problems rather than all problems.",
+            examples: [
+              { 
+                signal: "Minimal",
+                title: "Status Report Deluge",
+                content: "Monthly executive dashboard shows 37 KPIs across 8 departments with mixed performance. Marketing reports 12% increase in campaign performance while sales cycle has lengthened 9%. Engineering completed 82% of planned story points but technical debt has increased. Customer satisfaction score at 87% (down 2% YoY) with support ticket volume up 14%. Talent acquisition reports challenges in technical hiring with 4 senior positions open >90 days. Operations flagging supply chain risks for Q4. Finance projecting 7% miss on quarterly revenue targets with margin pressure from increasing costs. New product line launching in 60 days with beta feedback pending.",
+                insights: [
+                  "Information without prioritization",
+                  "No clear action implications",
+                  "Equal visual weight to all metrics creates confusion"
+                ]
+              },
+              { 
+                signal: "Basic",
+                title: "Priority Focus Areas",
+                content: "Three critical business issues require immediate executive attention: (1) The revenue shortfall is primarily driven by sales cycle elongation in the enterprise segment; (2) Customer churn among accounts >$250K has increased 40% in the past quarter; (3) Our new product launch timeline is at risk due to unresolved technical integration issues with core platform. Other metrics are within acceptable variance ranges.",
+                insights: [
+                  "Clear prioritization of critical issues",
+                  "Root causes identified for key metrics",
+                  "Appropriate filtering of secondary concerns"
+                ]
+              },
+              { 
+                signal: "Optimal",
+                title: "Strategic Inflection Point",
+                content: "The data reveals we're facing a strategic inflection point: our enterprise sales model is no longer working in a market shifting to product-led growth. The elongating sales cycle and customer acquisition costs (up 47% for enterprise) cannot be fixed with incremental improvements to the current approach. Customer usage data shows self-serve users discover 3.2x more features and have 58% higher retention. We need to fundamentally restructure our go-to-market strategy around product-led adoption with sales as an enhancement rather than a gateway.",
+                insights: [
+                  "Pattern recognition reveals systemic issue",
+                  "Clear strategic direction with supporting evidence",
+                  "Transformation need identified versus optimization"
+                ]
+              },
+              {
+                signal: "Transformative",
+                title: "Organizational Reinvention",
+                content: "This market shift isn't just affecting our sales motion—it signals a fundamental change in how value is delivered in our industry. The companies winning in this new paradigm have restructured around three principles: (1) Product experience as the primary acquisition channel, (2) Customer success embedded within the product rather than as a separate function, and (3) Pricing aligned to realized value rather than potential value. This requires us to reorganize our entire company around digital-first customer journeys. The first-mover advantage in this transition has shown 3-4x valuation premiums in our sector.",
+                insights: [
+                  "Industry-level context connects to organizational strategy",
+                  "Comprehensive transformation framework",
+                  "Competitive analysis creates urgency and direction"
+                ]
+              }
+            ],
+            strategies: [
+              "Ruthlessly distinguish between noise and signal in operational metrics",
+              "Identify patterns that reveal strategic shifts versus tactical issues",
+              "Create clear context hierarchies for different organizational levels",
+              "Maintain focus on the few truly consequential decisions"
+            ],
+            metrics: [
+              { name: "Decision Velocity", improvement: "+125%" },
+              { name: "Strategic Alignment", improvement: "+84%" },
+              { name: "Leadership Effectiveness", improvement: "+67%" }
+            ]
+          },
+          {
+            name: "Research",
+            icon: "🔬",
+            description: "Breakthrough insights through focused inquiry",
+            valueProposition: "Research excellence comes from asking the right questions, not collecting more data.",
+            examples: [
+              { 
+                signal: "Minimal",
+                title: "Data Collection Sprawl",
+                content: "Literature review identified 147 related papers across 8 disciplines with varying methodologies and conclusions. Survey data collected from 1,283 respondents with 42 demographic variables and 68 response fields. Exploratory data analysis shows potential correlations in 17 variable pairs. Three competing theories identified with supporting evidence for each. Previous studies show inconsistent results with methodological variations. Qualitative interviews yielded 340 pages of transcripts. Preliminary statistical analysis identified 9 factors with eigenvalues >1.0. External validity concerns regarding sample composition. Three potential research directions with varying resource requirements.",
+                insights: [
+                  "Data collection without guiding hypothesis",
+                  "Methodological sprawl without direction",
+                  "Analysis paralysis from too many variables"
+                ]
+              },
+              { 
+                signal: "Basic",
+                title: "Research Focus",
+                content: "Analysis of existing literature and preliminary data suggests focusing on two critical research questions: (1) How does variable X influence outcome Y specifically in high-context environments? (2) Why do conventional methods fail to account for the non-linear relationship observed in our pilot data? These questions address the most significant gap in current understanding while leveraging our methodological strengths.",
+                insights: [
+                  "Clear research questions emerge",
+                  "Focus narrows to addressable scope",
+                  "Explicit gap in existing knowledge identified"
+                ]
+              },
+              { 
+                signal: "Optimal",
+                title: "Methodological Breakthrough",
+                content: "The anomaly in our pilot data isn't a measurement error as initially suspected—it's evidence of a previously unrecognized causal mechanism. Traditional methods miss this effect because they assume linear relationships, while our data shows a threshold effect that only manifests under specific conditions. By developing a new experimental protocol that specifically tests for this threshold effect, we can demonstrate a causal relationship that explains the inconsistent results in previous studies.",
+                insights: [
+                  "Key insight identified from anomalous data",
+                  "Novel methodological approach developed",
+                  "Potential to resolve contradictions in field"
+                ]
+              },
+              {
+                signal: "Transformative",
+                title: "Paradigm Shift",
+                content: "Our findings don't just add to existing theory—they fundamentally challenge the core assumptions that have guided this field for decades. The threshold effect we've identified suggests that the entire theoretical framework needs reconsideration. Instead of gradual continuous effects, the system operates through phase transitions triggered by specific contextual conditions. This explains why previous interventions have shown such variable results and opens an entirely new approach to both research and practical applications in this domain.",
+                insights: [
+                  "Fundamental reconceptualization of the field",
+                  "Explanatory power for previously contradictory findings",
+                  "New theoretical framework with practical implications"
+                ]
+              }
+            ],
+            strategies: [
+              "Prioritize anomalies and outliers that don't fit existing theories",
+              "Develop focused hypotheses before extensive data collection",
+              "Challenge fundamental assumptions in the field",
+              "Design methods that specifically test boundary conditions"
+            ],
+            metrics: [
+              { name: "Research Impact Factor", improvement: "+210%" },
+              { name: "Time to Publication", improvement: "-47%" },
+              { name: "Grant Success Rate", improvement: "+95%" }
+            ]
+          },
+          {
+            name: "Sales",
+            icon: "💼",
+            description: "Deal velocity through customer context",
+            valueProposition: "Sales excellence comes from understanding the client's true decision factors, not presenting more features.",
+            examples: [
+              { 
+                signal: "Minimal",
+                title: "Feature-Dump Approach",
+                content: "Prospect is a mid-market company with 250+ employees across 4 locations. Decision committee includes 6 stakeholders from IT, Finance, and Operations. Product presentation covers our 12 core features, 4 integration options, and 6 pricing tiers. Competitive matrix shows our solution ranks favorably on 8 of 10 common comparison points. Customer references available from 3 similar companies. Implementation timeline estimated at 45-60 days with standard onboarding package. ROI calculator shows potential 127% return based on industry averages. Client has raised questions about security compliance, user training, and customization options.",
+                insights: [
+                  "Generic pitch not tailored to specific needs",
+                  "Feature focus rather than outcome focus",
+                  "No clear understanding of decision drivers"
+                ]
+              },
+              { 
+                signal: "Basic",
+                title: "Stakeholder Priorities",
+                content: "Analysis of stakeholder conversations reveals three key decision factors: (1) The CIO needs SOC 2 compliance documentation and integration with their existing security infrastructure; (2) The CFO is focused on moving from capital expenditure to operational expenditure model; (3) The Operations team requires minimal disruption to existing workflows. Technical features are secondary considerations once these primary concerns are addressed.",
+                insights: [
+                  "Key stakeholder motivations identified",
+                  "Decision hierarchy becoming clear",
+                  "Technical features properly contextualized"
+                ]
+              },
+              { 
+                signal: "Optimal",
+                title: "Decision Catalyst",
+                content: "The true decision driver isn't in our standard discovery questions. Through deeper conversation with the Operations lead, we discovered they're under pressure to improve process efficiency by 30% before fiscal year-end (90 days away). Their current evaluation timeline doesn't align with this goal. By reconfiguring our implementation approach to deliver core workflow improvements in 60 days rather than our standard 90-day rollout, we can position ourselves as the only solution capable of meeting their actual business deadline.",
+                insights: [
+                  "Hidden decision driver uncovered",
+                  "Competitive advantage through timing",
+                  "Solution reconfigured for actual need"
+                ]
+              },
+              {
+                signal: "Transformative",
+                title: "Trusted Advisor Positioning",
+                content: "Our analysis of the client's business context revealed that what they think they need (tool X to solve problem Y) actually addresses a symptom rather than the root cause. By sharing insights from similar clients who initially had the same perspective, we've helped them recognize that their core challenge is actually Z. This positions us not as a vendor in a competitive bake-off, but as a strategic advisor helping them solve the right problem. The conversation has shifted from price and features to transformation partnership, effectively eliminating the competitive evaluation process entirely.",
+                insights: [
+                  "Redefinition of client's understanding of their own problem",
+                  "Conversation elevated from vendor to strategic advisor",
+                  "Competitive process eliminated through insight provision"
+                ]
+              }
+            ],
+            strategies: [
+              "Invest heavily in understanding the client's business context before pitching",
+              "Identify the true decision drivers beyond stated requirements",
+              "Position solutions in terms of business outcomes, not features",
+              "Focus on the unique aspect of timing or approach that creates urgency"
+            ],
+            metrics: [
+              { name: "Sales Cycle Length", improvement: "-53%" },
+              { name: "Win Rate", improvement: "+78%" },
+              { name: "Average Deal Size", improvement: "+42%" }
+            ]
+          },
+          {
+            name: "Marketing",
+            icon: "📣",
+            description: "Campaign effectiveness through audience context",
+            valueProposition: "Marketing impact comes from resonant messaging, not reach or frequency.",
+            examples: [
+              { 
+                signal: "Minimal",
+                title: "Spray-and-Pray Campaign",
+                content: "Campaign targets professionals aged 25-54 in three industry verticals. Creative assets include 8 banner variations, 5 email templates, and 12 social media posts. Media plan allocates budget across search, social, display, and email channels. Messaging highlights product features, testimonials, and limited-time offer. Performance metrics tracked include impressions, clicks, cost-per-click, and conversion rate. A/B testing planned for headline variations and call-to-action buttons. Analytics dashboard shows channel-by-channel performance with standard attribution model. Campaign scheduled to run for 8 weeks with mid-point optimization review.",
+                insights: [
+                  "Broad targeting without audience specificity",
+                  "Generic messaging without contextual relevance",
+                  "Activity-focused rather than outcome-focused"
+                ]
+              },
+              { 
+                signal: "Basic",
+                title: "Audience Segmentation",
+                content: "Analysis of previous campaign data reveals three distinct audience segments with different behavior patterns: (1) Technical evaluators who respond to detailed specification content and peer validation; (2) Business stakeholders focused on ROI and implementation considerations; (3) Executive sponsors concerned with strategic alignment and competitive advantage. We should create separate messaging tracks and content journeys for each segment rather than a single generic approach.",
+                insights: [
+                  "Meaningful segments with different needs identified",
+                  "Content strategy aligned to decision journeys",
+                  "Resource allocation based on potential impact"
+                ]
+              },
+              { 
+                signal: "Optimal",
+                title: "Contextual Trigger Point",
+                content: "Our data shows that prospect engagement spikes dramatically during specific trigger events: when companies announce digital transformation initiatives, following funding rounds, and during leadership transitions. By monitoring these signals and deploying targeted outreach within 14 days of trigger events, our engagement rates increase 340% and conversion rates improve 210%. We should reallocate 60% of our budget from broad awareness to trigger-based precision targeting, focusing on the 'why now' moment when context makes our message relevant.",
+                insights: [
+                  "Timing significance identified through data",
+                  "Contextual relevance as primary driver",
+                  "Resource reallocation to high-impact moments"
+                ]
+              },
+              {
+                signal: "Transformative",
+                title: "Category Creation Strategy",
+                content: "The fundamental problem with our current marketing approach is that we're positioning ourselves within an existing category where prospects already have mental models and comparison criteria. Our differentiation gets lost in feature-by-feature comparisons. Instead, we should create a new category that frames the problem differently, positioning existing solutions as incomplete approaches to a larger challenge. This shifts evaluation criteria to our strengths and creates a narrative where we're the clear leader in addressing the complete problem rather than a competitor in an established space.",
+                insights: [
+                  "Competitive reframing through category definition",
+                  "Narrative control that emphasizes unique strengths",
+                  "Evaluation criteria shift that favors our approach"
+                ]
+              }
+            ],
+            strategies: [
+              "Focus on contextual relevance rather than reach or frequency",
+              "Identify trigger points when prospects are most receptive",
+              "Develop messaging aligned to actual decision journeys",
+              "Consider category creation to reframe competitive dynamics"
+            ],
+            metrics: [
+              { name: "Marketing Qualified Leads", improvement: "+163%" },
+              { name: "Cost Per Acquisition", improvement: "-58%" },
+              { name: "Conversion Rate", improvement: "+217%" }
+            ]
+          },
+          {
+            name: "Operations",
+            icon: "⚙️",
+            description: "Operational excellence through process context",
+            valueProposition: "Operational breakthroughs come from understanding system interactions, not optimizing individual components.",
+            examples: [
+              { 
+                signal: "Minimal",
+                title: "Metric Overload",
+                content: "Operations dashboard tracks 43 KPIs across production, logistics, quality, and maintenance. Weekly variance reports show mixed performance with 7 metrics outside acceptable ranges. Cost per unit up 4.2% year-over-year with material costs increasing and labor efficiency declining. On-time delivery at 87% against 95% target. Quality metrics show 2.3% defect rate with 5 categories of issues identified. Capacity utilization at 78% with bottlenecks in 3 production stages. Maintenance backlog includes 28 items with varying priority levels. Inventory turns declining with 12% increase in work-in-progress. Staff turnover at 18% annually with highest rates in second shift.",
+                insights: [
+                  "Isolated metrics without system view",
+                  "No clear prioritization framework",
+                  "Symptom focus rather than root cause analysis"
+                ]
+              },
+              { 
+                signal: "Basic",
+                title: "Constraint Identification",
+                content: "Analysis of production flow and variability data identifies a clear pattern: 78% of our delivery delays and quality issues stem from problems at a single production stage. This stage isn't the bottleneck in terms of capacity but creates downstream variability that cascades through the system. The primary constraint isn't processing speed but consistency and predictability. By focusing improvement efforts on stability at this critical stage rather than throughput across all stages, we can address multiple symptoms simultaneously.",
+                insights: [
+                  "System bottleneck properly identified",
+                  "Variability impact recognized",
+                  "Intervention point with cascade effects"
+                ]
+              },
+              { 
+                signal: "Optimal",
+                title: "Systemic Solution",
+                content: "The root cause of our operational challenges isn't within the production system but at the interface between sales and operations planning. Our analysis shows that 82% of schedule disruptions occur because of last-minute order prioritization changes that create ripple effects throughout production. By implementing a 72-hour production schedule freeze and developing a clear exception protocol that accounts for true customer impact, we can increase predictability throughout the system, improving both on-time delivery and quality metrics simultaneously.",
+                insights: [
+                  "Cross-functional root cause identified",
+                  "Upstream intervention for downstream benefits",
+                  "Process boundaries redefined for system optimization"
+                ]
+              },
+              {
+                signal: "Transformative",
+                title: "Operating Model Redesign",
+                content: "Our current challenges stem from a fundamental misalignment between our operating model and market requirements. We've been optimizing for efficiency and utilization in a market that increasingly values responsiveness and customization. Instead of incremental improvements to our linear production model, we need to transition to a cellular manufacturing approach with decoupled production stages and strategic buffer placement. This requires rethinking our entire production flow, inventory strategy, and staffing model—but would reduce lead times by 67% while actually decreasing total costs by eliminating the hidden costs of complexity and variability in our current system.",
+                insights: [
+                  "Paradigm shift in operating philosophy",
+                  "Trade-off recognition between efficiency and flexibility",
+                  "Fundamental redesign with counter-intuitive benefits"
+                ]
+              }
+            ],
+            strategies: [
+              "Focus on system interactions rather than isolated metrics",
+              "Identify and manage variability as a primary improvement lever",
+              "Look for intervention points with cascade effects",
+              "Question fundamental operating assumptions"
+            ],
+            metrics: [
+              { name: "On-Time Delivery", improvement: "+37%" },
+              { name: "Quality Metrics", improvement: "+42%" },
+              { name: "Total System Cost", improvement: "-23%" }
+            ]
+          }
+        ],
+        
+        // Case studies showing practical applications
+        caseStudies: [
+          {
+            title: "Global Technology Company",
+            subtitle: "Strategic Transformation",
+            challenge: "A Fortune 500 technology company was struggling with strategic clarity amid rapid market changes. Their executive team was drowning in data and reports but failing to make timely decisions on critical market shifts.",
+            approach: "We implemented a 'Signal Advantage' framework that reorganized their strategic information flow around three core questions: market transitions, customer value migration, and competitive differentiation. Decision meetings were restructured to focus on these signals rather than comprehensive reporting.",
+            results: [
+              "Strategic decision velocity increased by 74%",
+              "Resource reallocation to growth initiatives improved by 3.2x",
+              "Market capitalization grew 118% over 36 months",
+              "New product development cycle reduced from 18 to 7 months"
+            ],
+            keyInsight: "The company's challenge wasn't information scarcity but signal clarity. By creating focused context frameworks, they transformed executive bandwidth from information processing to strategic direction."
+          },
+          {
+            title: "Research Institution",
+            subtitle: "Scientific Breakthrough Acceleration",
+            challenge: "A leading research institution was struggling with research productivity despite increasing data collection and analysis capabilities. Cross-disciplinary teams were failing to generate breakthrough insights despite access to cutting-edge technology.",
+            approach: "We transformed their research approach by introducing contextual methodologies that prioritized anomaly detection and boundary exploration rather than comprehensive data collection. Research protocols were redesigned to identify and investigate pattern breaks rather than pattern confirmation.",
+            results: [
+              "Publication in top-tier journals increased by 215%",
+              "Patent applications grew from 8 to 47 annually",
+              "External research funding increased by 178%",
+              "Time from hypothesis to validated results decreased by 62%"
+            ],
+            keyInsight: "Research breakthroughs emerge from focusing on the right questions, not from more data or analysis. By prioritizing anomalies and contextual understanding, they transformed productivity."
+          },
+          {
+            title: "Enterprise Sales Organization",
+            subtitle: "Revenue Acceleration",
+            challenge: "A B2B technology provider was experiencing lengthening sales cycles and declining win rates despite increased investment in sales headcount and marketing campaigns. Customers reported confusion about value proposition.",
+            approach: "We transformed their sales approach from feature-based selling to context-based solutions. Sales teams were trained to identify and prioritize the client's business context before discussing capabilities. Discovery processes were redesigned to uncover the hidden decision drivers beyond stated requirements.",
+            results: [
+              "Average sales cycle reduced from 9.3 to 4.1 months",
+              "Win rates against primary competitors increased by 64%",
+              "Average deal size grew by 37% with improved margin",
+              "Customer expansion revenue increased by 86% annually"
+            ],
+            keyInsight: "The key to sales transformation wasn't better product knowledge or pitching techniques, but understanding the client's true decision context before proposing solutions."
+          },
+          {
+            title: "Marketing Organization",
+            subtitle: "Engagement Transformation",
+            challenge: "A consumer brand was experiencing declining campaign performance despite increased marketing spend across digital channels. Creative refreshes and additional channels failed to improve results.",
+            approach: "We shifted their approach from channel-centric to context-centric marketing. Their strategy was realigned around contextual triggers and moments of receptivity rather than reach and frequency. Content and messaging were reorganized around customer context rather than product features.",
+            results: [
+              "Campaign engagement rates increased by 340%",
+              "Cost per acquisition decreased by 58%",
+              "Customer lifetime value improved by 47%",
+              "Marketing attribution to revenue increased from 23% to 42%"
+            ],
+            keyInsight: "Marketing effectiveness is determined by contextual relevance, not reach or creativity alone. By focusing on understanding when and why customers would be receptive, they transformed results without increasing budget."
+          },
+          {
+            title: "Operations Transformation",
+            subtitle: "Supply Chain Excellence",
+            challenge: "A manufacturing organization was struggling with on-time delivery, quality issues, and rising costs despite implementing lean methodologies and advanced analytics across their operations.",
+            approach: "We transformed their approach from metric optimization to system understanding. The focus shifted to identifying interaction effects and variability sources rather than individual process improvements. Cross-functional contextual understanding became the priority rather than departmental KPI achievement.",
+            results: [
+              "On-time delivery improved from 82% to 97%",
+              "Quality metrics improved by 42% across all product lines",
+              "Total system costs reduced by 23%",
+              "New product introduction time decreased by 67%"
+            ],
+            keyInsight: "Operational excellence emerges from understanding system context and interactions, not optimizing individual components. The breakthrough came from shifting focus from metrics to relationships between processes."
+          }
+        ],
+        
+        // Implementation guidance for organizations
+        implementation: {
+          title: "The Context Advantage Implementation Framework",
+          description: "A structured approach to improving context quality across your organization",
+          phases: [
+            {
+              name: "Assessment",
+              steps: [
+                "Identify high-stakes decisions where context quality impacts outcomes",
+                "Analyze information flows to detect noise-inducing practices",
+                "Benchmark context quality against best-in-class examples",
+                "Quantify the cost of poor context in key workflows"
+              ]
+            },
+            {
+              name: "Optimization",
+              steps: [
+                "Implement structured context frameworks for critical decisions",
+                "Train team members on signal detection and noise filtering",
+                "Create context curation roles and responsibilities",
+                "Develop metrics for measuring context quality"
+              ]
+            },
+            {
+              name: "Transformation",
+              steps: [
+                "Redesign workflows around context quality rather than information volume",
+                "Implement AI augmentation focused on context enhancement",
+                "Create feedback loops that continuously improve signal quality",
+                "Build competitive advantage through proprietary context"
+              ]
+            }
+          ],
+          keyPrinciples: [
+            "Context precedes analysis: invest in getting the right information before processing",
+            "Quality over quantity: fewer high-signal inputs outperform more low-signal inputs",
+            "Context transfer is critical: formalize how insights are shared across the organization",
+            "Measure what matters: track decision quality rather than information processing"
+          ]
+        }
+      };
+
+      // State for current view and interactions
+      const [currentView, setCurrentView] = useState("spectrum");
+      const [selectedDomain, setSelectedDomain] = useState(0);
+      const [signalStrength, setSignalStrength] = useState(0.4);
+      const [activeSignalLevel, setActiveSignalLevel] = useState(1);
+      const [showInsightPopup, setShowInsightPopup] = useState(false);
+      const [activeFramework, setActiveFramework] = useState(0);
+      const [activeCaseStudy, setActiveCaseStudy] = useState(0);
+      const [isTransitioning, setIsTransitioning] = useState(false);
+      const [domainExampleIndex, setDomainExampleIndex] = useState(1);
+      const [animateEntrance, setAnimateEntrance] = useState(true);
+      
+      // Refs for animations and interactions
+      const signalLensRef = useRef(null);
+      
+      // Switch view handler with enhanced transitions
+      const switchView = (view) => {
+        if (currentView === view) return;
+        
+        setIsTransitioning(true);
+        setTimeout(() => {
+          setCurrentView(view);
+          setTimeout(() => {
+            setIsTransitioning(false);
+            setAnimateEntrance(true);
+            setTimeout(() => setAnimateEntrance(false), 1000);
+          }, 300);
+        }, 300);
+        
+        setShowInsightPopup(false);
+      };
+
+      // Handle signal strength change with enhanced transitions
+      const handleSignalChange = (newValue) => {
+        setSignalStrength(newValue);
+        
+        if (newValue >= 0.95) {
+          setTimeout(() => setShowInsightPopup(true), 800);
+        } else {
+          setShowInsightPopup(false);
+        }
+      };
+
+      // Handle mouse movement for the signal lens effect
+      const handleMouseMove = (e) => {
+        if (currentView !== "domains" || !signalLensRef.current) return;
+        
+        const rect = signalLensRef.current.getBoundingClientRect();
+        const x = e.clientX - rect.left;
+        const y = e.clientY - rect.top;
+        
+        signalLensRef.current.style.background = `radial-gradient(circle 150px at ${x}px ${y}px, rgba(255,255,255,0.95), rgba(255,255,255,0.1))`;
+      };
+
+      // Calculate blur amount based on signal strength and noise level
+      const calculateBlur = (noiseLevel) => {
+        if (currentView !== "spectrum") return 0;
+        const baseBlur = noiseLevel / 10;
+        return baseBlur * (1 - signalStrength);
+      };
+
+      // Calculate which signal level is active based on signal strength
+      useEffect(() => {
+        const levelIndex = Math.min(
+          Math.floor(signalStrength * topicData.layers.length),
+          topicData.layers.length - 1
+        );
+        setActiveSignalLevel(levelIndex);
+      }, [signalStrength]);
+      
+      // Initial animation on component mount
+      useEffect(() => {
+        setTimeout(() => setAnimateEntrance(false), 1000);
+      }, []);
+
+      return (
+        <div className="min-h-screen bg-gradient-to-br from-indigo-900 to-purple-900 text-white overflow-hidden flex flex-col relative">
+          {/* Noise texture overlay */}
+          <div className="noise-bg"></div>
+          
+          {/* Header with navigation */}
+          <div className="container mx-auto px-4 py-6 relative z-10">
+            <div className="flex flex-col md:flex-row justify-between items-center mb-6">
+              <div className="mb-4 md:mb-0">
+                <h1 className="text-3xl md:text-4xl font-light tracking-wider flex items-center">
+                  <span className="font-bold">SIGNAL</span> 
+                  <span className="mx-2">ADVANTAGE</span>
+                  <span className="hidden md:inline-block h-6 w-px bg-purple-400 mx-3"></span>
+                  <span className="text-purple-300 text-lg hidden md:inline-block">Context is the Competitive Edge</span>
+                </h1>
+              </div>
+              
+              <div className="flex space-x-1 md:space-x-2">
+                <button 
+                  onClick={() => switchView("spectrum")}
+                  className={`px-3 py-2 md:px-4 md:py-2 rounded-lg nav-button flex items-center text-sm md:text-base ${currentView === "spectrum" ? 'bg-white text-purple-900' : 'bg-purple-800 bg-opacity-50 hover:bg-opacity-70'}`}
+                >
+                  <span className="mr-1 md:mr-2">🔍</span>
+                  <span>Spectrum</span>
+                </button>
+                <button 
+                  onClick={() => switchView("domains")}
+                  className={`px-3 py-2 md:px-4 md:py-2 rounded-lg nav-button flex items-center text-sm md:text-base ${currentView === "domains" ? 'bg-white text-purple-900' : 'bg-purple-800 bg-opacity-50 hover:bg-opacity-70'}`}
+                >
+                  <span className="mr-1 md:mr-2">🧩</span>
+                  <span>Domains</span>
+                </button>
+                <button 
+                  onClick={() => switchView("framework")}
+                  className={`px-3 py-2 md:px-4 md:py-2 rounded-lg nav-button flex items-center text-sm md:text-base ${currentView === "framework" ? 'bg-white text-purple-900' : 'bg-purple-800 bg-opacity-50 hover:bg-opacity-70'}`}
+                >
+                  <span className="mr-1 md:mr-2">🧠</span>
+                  <span>Framework</span>
+                </button>
+                <button 
+                  onClick={() => switchView("cases")}
+                  className={`px-3 py-2 md:px-4 md:py-2 rounded-lg nav-button flex items-center text-sm md:text-base ${currentView === "cases" ? 'bg-white text-purple-900' : 'bg-purple-800 bg-opacity-50 hover:bg-opacity-70'}`}
+                >
+                  <span className="mr-1 md:mr-2">📊</span>
+                  <span>Cases</span>
+                </button>
+              </div>
+            </div>
+          </div>
+
+          {/* Main content area based on current view */}
+          <div className={`flex-1 container mx-auto px-4 pb-8 relative z-10 transition-all duration-500 ${isTransitioning ? 'opacity-0 transform translate-y-8' : 'opacity-100 transform translate-y-0'}`}>
+            
+            {/* SIGNAL SPECTRUM VIEW */}
+            {currentView === "spectrum" && (
+              <div className={`max-w-4xl mx-auto transition-all duration-500 ${animateEntrance ? 'transform translate-y-8 opacity-0' : 'transform translate-y-0 opacity-100'}`}>
+                <div className="mb-12 text-center">
+                  <h2 className="text-2xl md:text-3xl font-bold mb-4">Experience How Signal Quality Transforms Understanding</h2>
+                  <p className="text-lg mb-8 text-purple-200">Adjust the slider to see how increasing context quality clarifies meaning and reveals insights.</p>
+                  
+                  <div className="w-full max-w-2xl mx-auto mb-8">
+                    <input 
+                      type="range" 
+                      min="0" 
+                      max="1" 
+                      step="0.01" 
+                      value={signalStrength}
+                      onChange={(e) => handleSignalChange(parseFloat(e.target.value))}
+                      className="w-full h-2 signal-slider rounded-lg appearance-none cursor-pointer"
+                    />
+                    <div className="flex justify-between text-sm mt-1 text-purple-300">
+                      <span>Raw Data</span>
+                      <span>Initial Filter</span>
+                      <span>Context</span>
+                      <span>High Signal</span>
+                      <span>Clarity</span>
+                    </div>
+                  </div>
+                </div>
+                
+                {/* Content layers with varying blur based on signal strength */}
+                <div className="relative glass-card rounded-xl p-8 overflow-hidden min-h-96 flex items-center justify-center">
+                  {topicData.layers.map((layer, index) => (
+                    <div 
+                      key={index}
+                      style={{
+                        filter: `blur(${calculateBlur(layer.noiseLevel)}px)`,
+                        opacity: index === activeSignalLevel ? 1 : 0,
+                        position: 'absolute',
+                        top: 0,
+                        left: 0,
+                        right: 0,
+                        bottom: 0,
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        padding: '2rem',
+                        transition: 'opacity 0.5s ease, filter 0.5s ease',
+                      }}
+                    >
+                      <div className="text-center max-w-3xl">
+                        <h3 className="text-xl font-bold mb-6 highlight-text">{layer.level}</h3>
+                        <p className="text-lg leading-relaxed">{layer.content}</p>
+                        <div className="mt-6">
+                          <span className="inline-block px-3 py-1 bg-purple-800 bg-opacity-50 rounded-full text-sm">
+                            Noise Level: {layer.noiseLevel}%
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+                  
+                  {/* Signal indicator */}
+                  <div className="absolute bottom-4 right-4 flex items-center">
+                    <div className="w-3 h-3 rounded-full bg-green-400 mr-2 animate-pulse-glow"></div>
+                    <span className="text-sm">Signal Strength: {Math.round(signalStrength * 100)}%</span>
+                  </div>
+                </div>
+                
+                {/* Insight popup that appears at maximum signal */}
+                {showInsightPopup && (
+                  <div className="mt-8 bg-white text-purple-900 rounded-xl p-6 shadow-lg transform animate-fadeIn max-w-2xl mx-auto glow">
+                    <h3 className="text-xl font-bold mb-4">Key Strategic Insight Revealed</h3>
+                    <p className="mb-4">
+                      This demonstration shows how high-signal context transforms noise into actionable insight. 
+                      The most valuable expertise isn't processing power—it's the ability to identify the minimal 
+                      set of decisive factors that determine outcomes.
+                    </p>
+                    <div className="mt-6 p-4 bg-purple-100 rounded-lg border-l-4 border-purple-500">
+                      <p className="font-medium text-lg">
+                        "Context is the primary constraint in knowledge work, not processing capacity. The future belongs to context architects."
+                      </p>
+                    </div>
+                    <div className="mt-6 flex justify-end">
+                      <button 
+                        onClick={() => switchView("domains")}
+                        className="px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-all duration-300 transform hover:-translate-y-1"
+                      >
+                        See Domain Examples →
+                      </button>
+                    </div>
+                  </div>
+                )}
+              </div>
+            )}
+            
+            {/* DOMAIN EXAMPLES VIEW */}
+            {currentView === "domains" && (
+              <div className={`max-w-5xl mx-auto transition-all duration-500 ${animateEntrance ? 'transform translate-y-8 opacity-0' : 'transform translate-y-0 opacity-100'}`}>
+                <div className="mb-8">
+                  <h2 className="text-2xl md:text-3xl font-bold mb-4">How Experts Filter Signal From Noise</h2>
+                  <p className="text-lg mb-6 text-purple-200">
+                    Explore how experts in different domains identify high-signal information. 
+                    See how the same situation looks at different signal levels.
+                  </p>
+                  
+                  {/* Domain selection tabs */}
+                  <div className="flex flex-wrap mb-6 gap-2">
+                    {topicData.domains.map((domain, index) => (
+                      <button
+                        key={index}
+                        onClick={() => setSelectedDomain(index)}
+                        className={`px-4 py-2 rounded-lg flex items-center transition-all duration-300 ${selectedDomain === index ? 'bg-white text-purple-900 shadow-lg' : 'bg-purple-800 bg-opacity-50 hover:bg-purple-700'}`}
+                      >
+                        <span className="mr-2">{domain.icon}</span>
+                        <span>{domain.name}</span>
+                      </button>
+                    ))}
+                  </div>
+                  
+                  <div className="mb-6 glass-card p-4 rounded-lg">
+                    <p className="font-medium">
+                      <span className="text-purple-300">Value Proposition:</span> {topicData.domains[selectedDomain].valueProposition}
+                    </p>
+                  </div>
+                  
+                  {/* Example selection */}
+                  <div className="flex mb-8 border-b border-purple-700 relative">
+                    {["Minimal", "Basic", "Optimal", "Transformative"].map((level, index) => (
+                      <button
+                        key={level}
+                        onClick={() => setDomainExampleIndex(index)}
+                        className={`px-6 py-3 transition-all duration-300 ${domainExampleIndex === index ? 'text-white font-bold' : 'text-purple-300 hover:text-white'}`}
+                      >
+                        {level} Signal
+                      </button>
+                    ))}
+                    <div 
+                      className="tab-indicator absolute bottom-0 h-0.5 bg-white"
+                      style={{
+                        left: `${domainExampleIndex * 25}%`,
+                        width: '25%',
+                        transform: 'translateX(0%)',
+                      }}
+                    ></div>
+                  </div>
+                </div>
+                
+                {/* Domain example content */}
+                <div className="glass-card rounded-xl p-8 overflow-hidden min-h-96">
+                  <div className="mb-4">
+                    <div className={`inline-block px-3 py-1 rounded-full text-sm mb-2 ${
+                      domainExampleIndex === 0 ? 'bg-red-900 text-red-100' : 
+                      domainExampleIndex === 1 ? 'bg-yellow-900 text-yellow-100' :
+                      domainExampleIndex === 2 ? 'bg-green-900 text-green-100' :
+                      'bg-blue-900 text-blue-100'
+                    }`}>
+                      {topicData.domains[selectedDomain].examples[domainExampleIndex].signal} Signal
+                    </div>
+                    <h3 className="text-xl font-bold mb-2 highlight-text">
+                      {topicData.domains[selectedDomain].examples[domainExampleIndex].title}
+                    </h3>
+                  </div>
+                  
+                  <div className="mb-6">
+                    <p className="leading-relaxed mb-6">
+                      {topicData.domains[selectedDomain].examples[domainExampleIndex].content}
+                    </p>
+                  </div>
+                  
+                  {/* Key insights from this example */}
+                  <div className="bg-purple-900 bg-opacity-30 rounded-lg p-4 mb-6">
+                    <h4 className="font-bold mb-2">Key Insights:</h4>
+                    <ul className="space-y-2">
+                      {topicData.domains[selectedDomain].examples[domainExampleIndex].insights.map((insight, i) => (
+                        <li key={i} className="flex items-start">
+                          <span className="inline-block w-2 h-2 mt-2 mr-2 bg-purple-400 rounded-full"></span>
+                          <span>{insight}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                  
+                  {/* Strategy recommendations for this domain */}
+                  {domainExampleIndex >= 2 && (
+                    <div className="mt-8 animate-fadeIn">
+                      <h4 className="font-bold mb-2">Strategic Recommendations:</h4>
+                      <ul className="space-y-2">
+                        {topicData.domains[selectedDomain].strategies.map((strategy, i) => (
+                          <li key={i} className="flex items-start">
+                            <span className="inline-block w-6 h-6 mr-2 bg-purple-800 rounded-full flex items-center justify-center text-xs">{i+1}</span>
+                            <span>{strategy}</span>
+                          </li>
+                        ))}
+                      </ul>
+                      
+                      {/* Impact metrics */}
+                      <div className="mt-8 grid grid-cols-1 md:grid-cols-3 gap-4">
+                        {topicData.domains[selectedDomain].metrics.map((metric, i) => (
+                          <div key={i} className="glass-card rounded-lg p-4 text-center transition-all duration-500 hover:transform hover:scale-105">
+                            <p className="text-sm mb-1">{metric.name}</p>
+                            <p className="text-2xl font-bold text-green-400">{metric.improvement}</p>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+                </div>
+              </div>
+            )}
+            
+            {/* FRAMEWORK VIEW */}
+            {currentView === "framework" && (
+              <div className={`max-w-5xl mx-auto transition-all duration-500 ${animateEntrance ? 'transform translate-y-8 opacity-0' : 'transform translate-y-0 opacity-100'}`}>
+                <div className="mb-8">
+                  <h2 className="text-2xl md:text-3xl font-bold mb-4">The Context Advantage Framework</h2>
+                  <p className="text-lg mb-6 text-purple-200">
+                    Underlying principles that explain why context quality determines outcomes in knowledge work.
+                  </p>
+                  
+                  {/* Framework selection tabs */}
+                  <div className="flex flex-wrap mb-6 gap-2">
+                    {topicData.framework.map((section, index) => (
+                      <button
+                        key={index}
+                        onClick={() => setActiveFramework(index)}
+                        className={`px-4 py-2 rounded-lg transition-all duration-300 ${activeFramework === index ? 'bg-white text-purple-900 shadow-lg' : 'bg-purple-800 bg-opacity-50 hover:bg-purple-700'}`}
+                      >
+                        {section.name}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+                
+                {/* Framework content */}
+                <div className="glass-card rounded-xl p-8 min-h-96">
+                  <h3 className="text-xl font-bold mb-4 highlight-text">{topicData.framework[activeFramework].name}</h3>
+                  <p className="text-lg mb-8">{topicData.framework[activeFramework].description}</p>
+                  
+                  <div className="grid md:grid-cols-2 gap-6">
+                    {topicData.framework[activeFramework].principles.map((principle, index) => (
+                      <div key={index} className="glass-card rounded-lg p-6 transition-all duration-500 hover:transform hover:scale-105">
+                        <h4 className="font-bold text-lg mb-2">{principle.title}</h4>
+                        <p>{principle.description}</p>
+                      </div>
+                    ))}
+                  </div>
+                  
+                  {/* Implementation guidance */}
+                  {activeFramework === 2 && (
+                    <div className="mt-10 glass-card rounded-lg p-6 animate-fadeIn">
+                      <h4 className="font-bold text-lg mb-4">Implementation Guide</h4>
+                      
+                      <div className="mb-6">
+                        <h5 className="font-medium mb-2">Key Phases:</h5>
+                        <div className="flex flex-col md:flex-row gap-4">
+                          {topicData.implementation.phases.map((phase, i) => (
+                            <div key={i} className="flex-1 glass-card rounded-lg p-4">
+                              <h6 className="font-bold mb-2">{phase.name}</h6>
+                              <ul className="space-y-2 text-sm">
+                                {phase.steps.map((step, j) => (
+                                  <li key={j} className="flex items-start">
+                                    <span className="inline-block w-2 h-2 mt-2 mr-2 bg-purple-400 rounded-full"></span>
+                                    <span>{step}</span>
+                                  </li>
+                                ))}
+                              </ul>
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+                      
+                      <div>
+                        <h5 className="font-medium mb-2">Guiding Principles:</h5>
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                          {topicData.implementation.keyPrinciples.map((principle, i) => (
+                            <div key={i} className="glass-card rounded-lg p-3 text-sm">
+                              "{principle}"
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+                    </div>
+                  )}
+                </div>
+              </div>
+            )}
+            
+            {/* CASE STUDIES VIEW */}
+            {currentView === "cases" && (
+              <div className={`max-w-5xl mx-auto transition-all duration-500 ${animateEntrance ? 'transform translate-y-8 opacity-0' : 'transform translate-y-0 opacity-100'}`}>
+                <div className="mb-8">
+                  <h2 className="text-2xl md:text-3xl font-bold mb-4">Real-World Transformation Examples</h2>
+                  <p className="text-lg mb-6 text-purple-200">
+                    Case studies demonstrating how organizations achieved breakthrough results by improving context quality.
+                  </p>
+                  
+                  {/* Case study selection tabs */}
+                  <div className="flex flex-wrap mb-6 gap-2">
+                    {topicData.caseStudies.map((casestudy, index) => (
+                      <button
+                        key={index}
+                        onClick={() => setActiveCaseStudy(index)}
+                        className={`px-4 py-2 rounded-lg transition-all duration-300 ${activeCaseStudy === index ? 'bg-white text-purple-900 shadow-lg' : 'bg-purple-800 bg-opacity-50 hover:bg-purple-700'}`}
+                      >
+                        {casestudy.title.split(" ")[0]}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+                
+                {/* Case study content */}
+                <div className="glass-card rounded-xl p-8">
+                  <div className="flex items-center mb-6">
+                    <h3 className="text-xl font-bold highlight-text">{topicData.caseStudies[activeCaseStudy].title}</h3>
+                    <span className="mx-3 text-purple-400">|</span>
+                    <span className="text-purple-200">{topicData.caseStudies[activeCaseStudy].subtitle}</span>
+                  </div>
+                  
+                  <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-8">
+                    <div className="md:col-span-2">
+                      <div className="mb-6">
+                        <h4 className="font-medium text-purple-300 mb-1">Challenge</h4>
+                        <p>{topicData.caseStudies[activeCaseStudy].challenge}</p>
+                      </div>
+                      
+                      <div className="mb-6">
+                        <h4 className="font-medium text-purple-300 mb-1">Approach</h4>
+                        <p>{topicData.caseStudies[activeCaseStudy].approach}</p>
+                      </div>
+                      
+                      <div className="mt-8 p-4 glass-card rounded-lg">
+                        <h4 className="font-medium mb-2">Key Insight</h4>
+                        <p className="italic">"{topicData.caseStudies[activeCaseStudy].keyInsight}"</p>
+                      </div>
+                    </div>
+                    
+                    <div>
+                      <h4 className="font-medium text-purple-300 mb-3">Results</h4>
+                      <div className="space-y-3">
+                        {topicData.caseStudies[activeCaseStudy].results.map((result, i) => (
+                          <div key={i} className="glass-card rounded-lg p-3 text-center transition-all duration-300 hover:transform hover:scale-105">
+                            <p className="font-bold">{result}</p>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                
+                {/* Implementation callout */}
+                <div className="mt-8 signal-gradient rounded-xl p-6 shadow-lg">
+                  <div className="flex flex-col md:flex-row items-center justify-between">
+                    <div>
+                      <h3 className="text-xl font-bold mb-2">Ready to improve context quality in your organization?</h3>
+                      <p>Our advisory team can help implement these principles with your teams.</p>
+                    </div>
+                    <div className="mt-4 md:mt-0">
+                      <button className="px-6 py-3 bg-white text-purple-900 rounded-lg font-bold hover:bg-gray-100 transition-all duration-300 transform hover:-translate-y-1">
+                        Request Advisory Services
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            )}
+          </div>
+          
+          {/* Footer with brand and credits */}
+          <div className="container mx-auto px-4 py-4 text-center text-sm text-purple-300 relative z-10">
+            <p>Signal Advantage™ | Context is the Competitive Edge in Knowledge Work</p>
+          </div>
+        </div>
+      );
+    };
+    
+    ReactDOM.render(<SignalAdvantageApp />, document.getElementById('root'));
+  </script>
+</body>
+</html>
